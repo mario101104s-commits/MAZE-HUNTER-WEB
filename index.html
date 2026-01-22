@@ -1,15 +1,17 @@
-<html lang="es"><head>
+<html lang="es">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAZE HUNTER - The Lost Temple</title>
-    
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a3a1a, #0a1a0a);
@@ -21,7 +23,7 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         #loading-screen {
             display: flex;
             flex-direction: column;
@@ -29,22 +31,22 @@
             justify-content: center;
             text-align: center;
         }
-        
+
         #loading-screen h1 {
             font-size: 48px;
             font-weight: bold;
             color: #DAA520;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
             margin-bottom: 20px;
             animation: pulse 2s infinite;
         }
-        
+
         #loading-screen p {
             font-size: 18px;
             color: #FFD700;
             margin-bottom: 30px;
         }
-        
+
         .spinner {
             width: 50px;
             height: 50px;
@@ -54,22 +56,34 @@
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-        
+
         #progress {
             font-size: 14px;
             color: #ccc;
         }
-        
+
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        
+
         #game-container {
             display: none;
             width: 100%;
@@ -77,6 +91,7 @@
         }
     </style>
 </head>
+
 <body class="">
     <div id="loading-screen">
         <h1>MAZE HUNTER</h1>
@@ -84,12 +99,12 @@
         <div class="spinner"></div>
         <p id="progress">Cargando...</p>
     </div>
-    
+
     <div id="game-container"></div>
-    
+
     <!-- CheerpJ 3.0 Loader -->
-    <script src="https://cj3.leaningtech.com/3.0/cj3loader.js"></script>
-    
+    <script src="https://cjrtnc.leaningtech.com/3.0/cj3loader.js"></script>
+
     <script>
         (async function() {
             const progress = document.getElementById('progress');
@@ -131,4 +146,6 @@
             }
         })();
     </script>
-</body></html>
+</body>
+
+</html>
