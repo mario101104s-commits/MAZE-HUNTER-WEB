@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAZE HUNTER - The Lost Temple</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a3a1a, #0a1a0a);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        #loading-screen h1 {
+            font-size: 48px;
+            font-weight: bold;
+            color: #DAA520;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        #loading-screen p {
+            font-size: 18px;
+            color: #FFD700;
+            margin-bottom: 30px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(218, 165, 32, 0.3);
+            border-top: 4px solid #DAA520;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        #progress {
+            font-size: 14px;
+            color: #ccc;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #game-container {
+            display: none;
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <h1>MAZE HUNTER</h1>
+        <p>The Lost Temple</p>
+        <div class="spinner"></div>
+        <p id="progress">Cargando el juego...</p>
+    </div>
+    
+    <div id="game-container"></div>
+    
+    <!-- CheerpJ 3.0 Loader -->
+    <script src="https://cj3.leaningtech.com/3.0/cj3loader.js"></script>
+    
+    <script>
+        (async function() {
+            const progress = document.getElementById('progress');
+            const loadingScreen = document.getElementById('loading-screen');
+            const gameContainer = document.getElementById('game-container');
+            
+            try {
+                // Update progress
+                progress.textContent = 'Iniciando motor CheerpJ...';
+                
+                // Initialize CheerpJ
+                await cheerpjInit({
+                    javaProperties: [
+                        "java.awt.headless=false"
+                    ],
+                    preloadResources: [
+                        "/app/MazeHunter.jar"
+                    ]
+                });
+                
+                progress.textContent = 'Cargando MAZE HUNTER...';
+                
+                // Create the applet/application container
+                await cheerpjCreateDisplay(-1, -1, gameContainer);
+                
+                progress.textContent = 'Iniciando juego...';
+                
+                // Run the JAR file
+                await cheerpjRunJar("/app/MazeHunter.jar");
+                
+                // Hide loading screen, show game
+                loadingScreen.style.display = 'none';
+                gameContainer.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error loading game:', error);
+                progress.textContent = `Error: ${error.message || 'No se pudo cargar el juego'}`;
+                progress.style.color = '#ff4444';
+            }
+        })();
+    </script>
+</body>
+</html>
