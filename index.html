@@ -106,39 +106,39 @@
     <script src="https://cjrtnc.leaningtech.com/3.0/cj3loader.js"></script>
 
     <script>
-        (async function() {
+        (async function () {
             const progress = document.getElementById('progress');
             const loadingScreen = document.getElementById('loading-screen');
             const gameContainer = document.getElementById('game-container');
-            
+
             try {
                 // Update progress
                 progress.textContent = 'Iniciando motor CheerpJ...';
-                
+
                 // Initialize CheerpJ
                 await cheerpjInit({
                     javaProperties: [
                         "java.awt.headless=false"
                     ],
                     preloadResources: [
-                        "/app/MazeHunter.jar"
+                        "app/MazeHunter.jar"
                     ]
                 });
-                
+
                 progress.textContent = 'Cargando MAZE HUNTER...';
-                
+
                 // Create the applet/application container
                 await cheerpjCreateDisplay(-1, -1, gameContainer);
-                
+
                 progress.textContent = 'Iniciando juego...';
-                
+
                 // Run the JAR file
-                await cheerpjRunJar("/app/MazeHunter.jar");
-                
+                await cheerpjRunJar("app/MazeHunter.jar");
+
                 // Hide loading screen, show game
                 loadingScreen.style.display = 'none';
                 gameContainer.style.display = 'block';
-                
+
             } catch (error) {
                 console.error('Error loading game:', error);
                 progress.textContent = "Error: " + (error.message || 'No se pudo cargar el juego');
