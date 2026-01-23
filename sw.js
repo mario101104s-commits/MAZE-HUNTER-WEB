@@ -125,6 +125,8 @@ self.addEventListener('activate', function (event) {
                     }
                 })
             );
+        }).then(() => {
+            return self.clients.claim();
         })
     );
 });
