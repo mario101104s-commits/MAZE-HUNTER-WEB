@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maze Hunter - The Lost Temple</title>
-    
+
     <!-- Favicon -->
     <link rel="icon" href="imagenes/jugador.png" type="image/png">
-    
+
     <!-- Estilos CSS -->
     <style>
         * {
@@ -15,7 +16,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Papyrus', 'Copperplate', serif;
             background: linear-gradient(135deg, #1a3a1a, #0a1a0a);
@@ -24,14 +25,14 @@
             height: 100vh;
             position: relative;
         }
-        
+
         /* Carga de fuente */
         @font-face {
             font-family: 'Papyrus';
             src: url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap');
             font-display: swap;
         }
-        
+
         /* Contenedor principal */
         #app-container {
             width: 100%;
@@ -39,7 +40,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         /* Pantalla de carga */
         .loading-screen {
             position: fixed;
@@ -54,22 +55,22 @@
             align-items: center;
             z-index: 9999;
         }
-        
+
         .loading-title {
             font-size: 48px;
             font-weight: bold;
             color: #DAA520;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
             margin-bottom: 30px;
             animation: pulse 2s infinite;
         }
-        
+
         .loading-subtitle {
             font-size: 18px;
             color: #FFD700;
             margin-bottom: 40px;
         }
-        
+
         .loading-spinner {
             width: 60px;
             height: 60px;
@@ -78,17 +79,29 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        
+
         /* Estilos para la aplicación */
         .mazehunter-app {
             width: 100%;
@@ -96,7 +109,7 @@
             position: relative;
             font-family: 'Cinzel', serif;
         }
-        
+
         /* Botones estilizados */
         .boton-estilizado {
             transition: all 0.3s ease;
@@ -104,92 +117,92 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
-        
+
         .boton-estilizado:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
         }
-        
+
         .boton-entrada {
             background: linear-gradient(135deg, #2E7D32, #1B5E20);
         }
-        
+
         .boton-salida {
             background: linear-gradient(135deg, #C62828, #B71C1C);
         }
-        
+
         .boton-anales {
             background: linear-gradient(135deg, #6A1B9A, #4A148C);
         }
-        
+
         .boton-generico {
             background: linear-gradient(135deg, #1565C0, #0D47A1);
         }
-        
+
         /* Formularios */
         .form-input {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.9);
             border: none;
             border-radius: 5px;
             padding: 12px;
             font-size: 14px;
             transition: all 0.3s ease;
         }
-        
+
         .form-input:focus {
             outline: none;
             border: 2px solid #DAA520;
             box-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
         }
-        
+
         /* Canvas del juego */
         .game-canvas {
             border: 2px solid #DAA520;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             border-radius: 4px;
         }
-        
+
         /* HUD */
         .hud-container {
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             border-bottom: 2px solid #DAA520;
             backdrop-filter: blur(5px);
         }
-        
+
         /* Menú de pausa */
         .pause-menu {
-            background: rgba(0,0,0,0.95);
+            background: rgba(0, 0, 0, 0.95);
             border: 2px solid #DAA520;
             border-radius: 15px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
         }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
             .loading-title {
                 font-size: 36px;
             }
-            
+
             .loading-subtitle {
                 font-size: 16px;
             }
-            
+
             .boton-estilizado {
                 width: 200px !important;
                 height: 50px !important;
                 font-size: 18px !important;
             }
         }
-        
+
         @media (max-width: 480px) {
             .loading-title {
                 font-size: 28px;
             }
-            
+
             .boton-estilizado {
                 width: 150px !important;
                 height: 45px !important;
@@ -198,22 +211,33 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Pantalla de carga inicial -->
     <div id="loading-screen" class="loading-screen">
         <h1 class="loading-title">MAZE HUNTER</h1>
-        <p class="loading-subtitle">The Lost Temple</p>
+        <p class="loading-subtitle">The Lost Temple - v2.0</p>
         <div class="loading-spinner"></div>
+        <button id="btn-reset-cache" style="
+            margin-top: 20px;
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        ">Solucionar Problemas de Carga</button>
     </div>
-    
+
     <!-- Contenedor principal de la aplicación -->
     <div id="app-container">
         <!-- La aplicación TeaVM se insertará aquí -->
     </div>
-    
+
     <!-- Script de TeaVM -->
     <script src="classes.js"></script>
-    
+
     <!-- Script de inicialización -->
     <script>
         // Esperar a que el DOM esté listo
@@ -269,11 +293,44 @@
                 document.body.appendChild(errorDiv);
             });
             
-            // Configurar Service Worker para PWA (opcional)
+            // Botón de reset
+            document.getElementById('btn-reset-cache').addEventListener('click', function() {
+                if(confirm('¿Quieres reiniciar la aplicación para corregir errores? Esto borrará el caché local.')) {
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                            for(let registration of registrations) {
+                                registration.unregister();
+                            }
+                            caches.keys().then(function(names) {
+                                for (let name of names) caches.delete(name);
+                            });
+                            window.location.reload(true);
+                        });
+                    } else {
+                        window.location.reload(true);
+                    }
+                }
+            });
+
+            // Configurar Service Worker para PWA con cache-busting
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js')
+                // Usar timestamp para forzar chequeo de actualización de sw.js
+                navigator.serviceWorker.register('sw.js?v=' + new Date().getTime())
                     .then(function(registration) {
-                        console.log('Service Worker registrado:', registration);
+                        console.log('Service Worker registrado con éxito:', registration);
+                        
+                        // Detectar cambios
+                        registration.onupdatefound = function() {
+                            const installingWorker = registration.installing;
+                            installingWorker.onstatechange = function() {
+                                if (installingWorker.state === 'installed') {
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('Nueva versión disponible - recargando...');
+                                        window.location.reload();
+                                    }
+                                }
+                            };
+                        };
                     })
                     .catch(function(error) {
                         console.log('Error en Service Worker:', error);
@@ -297,4 +354,5 @@
         }
     </script>
 </body>
+
 </html>

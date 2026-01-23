@@ -1,7 +1,7 @@
 // Service Worker para Maze Hunter Web
 // Proporciona funcionalidad PWA y caché offline
 
-const CACHE_NAME = 'mazehunter-v1';
+const CACHE_NAME = 'mazehunter-v2';
 const urlsToCache = [
     'index.html',
     'classes.js',
@@ -64,44 +64,47 @@ const urlsToCache = [
 ];
 
 // Evento de instalación
-self.addEventListener('install', function(event) {
+self.addEventListener('install', function (event) {
+    // Forzar activación inmediata
+    self.skipWaiting();
+
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(function(cache) {
-                console.log('Cache abierto');
+            .then(function (cache) {
+                console.log('Cache v2 abierto');
                 return cache.addAll(urlsToCache);
             })
     );
 });
 
 // Evento de fetch
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request)
-            .then(function(response) {
+            .then(function (response) {
                 // Cache hit - return response
                 if (response) {
                     return response;
                 }
-                
+
                 // Clone request because it can only be used once
                 const fetchRequest = event.request.clone();
-                
+
                 return fetch(fetchRequest).then(
-                    function(response) {
+                    function (response) {
                         // Check if valid response
                         if (!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
-                        
+
                         // Clone response because it can only be used once
                         const responseToCache = response.clone();
-                        
+
                         caches.open(CACHE_NAME)
-                            .then(function(cache) {
+                            .then(function (cache) {
                                 cache.put(event.request, responseToCache);
                             });
-                        
+
                         return response;
                     }
                 );
@@ -110,13 +113,13 @@ self.addEventListener('fetch', function(event) {
 });
 
 // Evento de activación
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function (event) {
     const cacheWhitelist = [CACHE_NAME];
-    
+
     event.waitUntil(
-        caches.keys().then(function(cacheNames) {
+        caches.keys().then(function (cacheNames) {
             return Promise.all(
-                cacheNames.map(function(cacheName) {
+                cacheNames.map(function (cacheName) {
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
                         return caches.delete(cacheName);
                     }
