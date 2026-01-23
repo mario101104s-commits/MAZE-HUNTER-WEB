@@ -241,24 +241,24 @@
     <!-- Script de inicialización -->
     <script>
         // Esperar a que el DOM esté listo
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Ocultar pantalla de carga después de un tiempo
-            setTimeout(function() {
+            setTimeout(function () {
                 const loadingScreen = document.getElementById('loading-screen');
                 if (loadingScreen) {
                     loadingScreen.style.opacity = '0';
                     loadingScreen.style.transition = 'opacity 0.5s ease';
-                    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         loadingScreen.style.display = 'none';
                     }, 500);
                 }
             }, 2000);
-            
+
             // Configurar manejo de errores global
-            window.addEventListener('error', function(e) {
+            window.addEventListener('error', function (e) {
                 console.error('Error en la aplicación:', e.error);
-                
+
                 // Mostrar mensaje de error amigable
                 const errorDiv = document.createElement('div');
                 errorDiv.style.cssText = `
@@ -289,19 +289,19 @@
                         font-weight: bold;
                     ">Recargar Página</button>
                 `;
-                
+
                 document.body.appendChild(errorDiv);
             });
-            
+
             // Botón de reset
-            document.getElementById('btn-reset-cache').addEventListener('click', function() {
-                if(confirm('¿Quieres reiniciar la aplicación para corregir errores? Esto borrará el caché local.')) {
+            document.getElementById('btn-reset-cache').addEventListener('click', function () {
+                if (confirm('¿Quieres reiniciar la aplicación para corregir errores? Esto borrará el caché local.')) {
                     if ('serviceWorker' in navigator) {
-                        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                            for(let registration of registrations) {
+                        navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                            for (let registration of registrations) {
                                 registration.unregister();
                             }
-                            caches.keys().then(function(names) {
+                            caches.keys().then(function (names) {
                                 for (let name of names) caches.delete(name);
                             });
                             window.location.reload(true);
@@ -314,15 +314,15 @@
 
             // Configurar Service Worker para PWA con cache-busting
             if ('serviceWorker' in navigator) {
-                // Usar timestamp para forzar chequeo de actualización de sw.js
-                navigator.serviceWorker.register('sw.js?v=' + new Date().getTime())
-                    .then(function(registration) {
+                // Usar versión estática para evitar bucles de recarga
+                navigator.serviceWorker.register('sw.js?v=2.0')
+                    .then(function (registration) {
                         console.log('Service Worker registrado con éxito:', registration);
-                        
+
                         // Detectar cambios
-                        registration.onupdatefound = function() {
+                        registration.onupdatefound = function () {
                             const installingWorker = registration.installing;
-                            installingWorker.onstatechange = function() {
+                            installingWorker.onstatechange = function () {
                                 if (installingWorker.state === 'installed') {
                                     if (navigator.serviceWorker.controller) {
                                         console.log('Nueva versión disponible - recargando...');
@@ -332,19 +332,19 @@
                             };
                         };
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         console.log('Error en Service Worker:', error);
                     });
             }
         });
-        
+
         // Prevenir zoom con gestures en móviles
-        document.addEventListener('touchmove', function(event) {
+        document.addEventListener('touchmove', function (event) {
             if (event.scale !== 1) {
                 event.preventDefault();
             }
         }, { passive: false });
-        
+
         // Configurar viewport para móviles
         if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
             const viewport = document.querySelector('meta[name="viewport"]');
